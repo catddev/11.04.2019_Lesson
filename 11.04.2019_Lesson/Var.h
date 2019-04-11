@@ -1,4 +1,5 @@
 ﻿//универсальная переменная
+//task for exam!!!!!!!!
 #pragma once
 #include<iostream>
 #include <iomanip>
@@ -6,8 +7,8 @@
 #include<ctime>
 #include<cstring>
 #include<fstream>
+#include<string>
 using namespace std;
-
 
 //1.	Реализовать класс var - «Универсальная переменная».Объекты экземпляры этого класса способны хранить в себе значения следующих типов : int, double, String(строка – уже готовый класс).
 //Например :
@@ -24,8 +25,6 @@ using namespace std;
 //Для класса var необходимо перегрузить арифметические операторы : +, -, *, / , +=, -=, *=, /=
 //И операторы сравнения : <, >, <= , >= , == , !=
 //(Вся перегрузка осуществляется как функции - члены класса var)
-//
-//В переменной типа var в любой момент времени может храниться только одно значение(или int, или double, или String).
 //
 //При перегрузке операторов учитывать следующее : если в операции типы значений двух операндов типа var разные, то необходимо приводить(конвертировать) значение из второго операнда к типу значения первого операнда и только после этого выполнять операцию. (При этом значение(и тип) второго операнда в самом объекте var не меняется)
 //Например :
@@ -48,3 +47,81 @@ using namespace std;
 //Аналогично для Строки *= и /=
 //Добавить в класс var преобразования к типам : int, double, char*
 
+class Var {
+	int intV;
+	double doubleV;
+	string strV;
+	bool intf, doublef, stringf; //флажки
+public:
+	Var();
+	//creating different constructors
+	Var(int i);
+	Var(double d);
+	Var(string s);
+	Var(const char*s);
+	//operator int();
+	operator double();
+
+	Var operator=(string s);
+	Var operator+(Var obj);
+	Var operator+(int i);
+	Var operator+(double d);
+	Var operator+(string s);
+	Var operator+(const char* s);
+	Var operator+=(Var obj); //в отличие от просто оператора +, здесь все изменения будут в текущем объекте, будут его изменять
+	Var operator+=(int i);
+	Var operator+=(double d);
+	Var operator+=(string s);
+	Var operator+=(const char* s);
+	Var operator-(Var obj);
+	Var operator-(int i);
+	Var operator-(double d);
+	//Var operator-(string s);
+	//Var operator-(const char* s);
+	Var operator-=(Var obj);
+	Var operator-=(int i);
+	Var operator-=(double d);
+	//Var operator-=(string s);
+	//Var operator-=(const char* s);
+	Var operator*(Var obj);
+	Var operator*(int i);
+	Var operator*(double d);
+	Var operator*(string s);
+	Var operator*(const char* s);
+	//Var operator/(Var obj);
+	//Var operator/(int i);
+	//Var operator/(double d);
+	//Var operator/(string s);
+	//Var operator/(const char* s);
+	//Var operator*=(Var obj);
+	//Var operator*=(int i);
+	//Var operator*=(double d);
+	//Var operator*=(string s);
+	//Var operator*=(const char* s);
+	//Var operator/=(Var obj);
+	//Var operator/=(int i);
+	//Var operator/=(double d);
+	//Var operator/=(string s);
+	//Var operator/=(const char* s);
+	bool operator==(Var obj);
+	bool operator==(int i);
+	bool operator==(double d);
+	bool operator==(string s);
+	bool operator==(const char* s);
+	bool operator!=(Var obj);
+	bool operator!=(int i);
+	bool operator!=(double d);
+	bool operator!=(string s);
+	bool operator!=(const char* s);
+	bool operator>(Var obj);
+	bool operator>(int i);
+	bool operator>(double d);
+	bool operator>(string s);
+	bool operator>(const char* s);
+	bool operator<(Var obj);
+	bool operator<(int i);
+	bool operator<(double d);
+	bool operator<(string s);
+	bool operator<(const char* s);
+	void show();
+};
