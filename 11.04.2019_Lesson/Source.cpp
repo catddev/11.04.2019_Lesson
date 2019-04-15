@@ -3,13 +3,10 @@
 int main() {
 
 	Var el = 5.7;
-	Var el1("15");
-	Var el3 = "15";
+	// если чтото передается в кавычках, то это в любом случае чар-массив
+	Var el1("15");//const char
+	Var el3 = "15";//const char
 	el3.show();
-
-	char str[20];
-	strcpy_s(str, "MICROSOFT");
-	Var el33(str);//?
 
 	double a = 100 + el;
 	double b = el + el3;

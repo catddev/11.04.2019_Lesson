@@ -4,7 +4,7 @@ Var::Var()
 {
 	intV = 0;
 	doubleV = 0;
-	strV = ""; //как сделать пустую строку по умочанию?
+	strV = ""; //пустую строку по умочанию
 }
 
 Var::Var(int i)
@@ -137,9 +137,7 @@ Var Var::operator+(const char* s)
 }
 Var Var::operator+=(Var obj)
 {
-	*this = *this + (obj);
-
-	return *this;
+	return(*this = *this + (obj));
 }
 
 Var Var::operator+=(int i)
@@ -203,7 +201,7 @@ bool Var::operator==(string s)
 }
 bool Var::operator==(const char * s)
 {
-	return (strV == s);
+	return (strV == string(s));//
 }
 bool Var::operator!=(Var obj)
 {
@@ -223,7 +221,7 @@ bool Var::operator!=(string s)
 }
 bool Var::operator!=(const char * s)
 {
-	return (strV != s);
+	return (strV != string(s));
 }
 Var Var::operator-(Var obj)
 {
@@ -588,7 +586,7 @@ bool Var::operator>(string s)
 }
 bool Var::operator>(const char * s)
 {
-	return  (strV > s);
+	return  (strV > string(s));
 }
 bool Var::operator<(Var obj)
 {
@@ -624,7 +622,7 @@ bool Var::operator<(string s)
 }
 bool Var::operator<(const char * s)
 {
-	return  (strV < s);//? string(s);
+	return  (strV < string(s));
 }
 bool Var::operator>=(Var obj)
 {
@@ -660,7 +658,7 @@ bool Var::operator>=(string s)
 }
 bool Var::operator>=(const char * s)
 {
-	return  (strV >= s);
+	return  (strV >= string(s));
 }
 bool Var::operator<=(Var obj)
 {
@@ -696,7 +694,7 @@ bool Var::operator<=(string s)
 }
 bool Var::operator<=(const char * s)
 {
-	return  (strV <= s);//? string(s);
+	return  (strV <= string(s));
 }
 void Var::show()
 {
