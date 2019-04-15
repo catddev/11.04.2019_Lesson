@@ -61,8 +61,6 @@ Var::operator double()
 Var Var::operator=(string s)
 {
 	stringf = true;
-	doublef = false;
-	intf = false;
 	this->strV = s;
 	this->intV = atoi(s.c_str());
 	this->doubleV = atof(s.c_str());
@@ -139,34 +137,38 @@ Var Var::operator+(const char* s)
 }
 Var Var::operator+=(Var obj)
 {
-	if (intf)
-		intV += obj.intV;
-	else if (doublef)
-		doubleV += obj.doubleV;
-	else if (stringf)
-		strV += obj.strV;
+	*this = *this + (obj);
 
 	return *this;
 }
 
 Var Var::operator+=(int i)
 {
-	return(*this + i);
+	*this = *this + (i);
+
+	return *this;
 }
 
 Var Var::operator+=(double d)
 {
-	return(*this + d);
+	*this = *this + (d);
+
+	return *this;
 }
 
 Var Var::operator+=(string s)
 {
-	return(*this + s);
+	*this = *this + (s);
+
+	return *this;
 }
 Var Var::operator+=(const char* s)
 {
-	return(*this + s);
+	*this = *this + (s);
+
+	return *this;
 }
+
 bool Var::operator==(Var obj)
 {
 	if (intf)
@@ -227,11 +229,11 @@ Var Var::operator-(Var obj)
 {
 	Var tmp(*this);
 	if (tmp.intf)
-		tmp.intV = abs(intV - obj.intV);
+		tmp.intV = intV - obj.intV;
 	else if (tmp.doublef)
-		tmp.doubleV = abs(intV - obj.doubleV);
-	/*else if (tmp.stringf)
-		tmp.strV -= obj.strV;*/
+		tmp.doubleV = intV - obj.doubleV;
+	else if (tmp.stringf)
+	{ }
 
 	return tmp;
 }
@@ -243,8 +245,8 @@ Var Var::operator-(int i)
 		tmp.intV -= i;
 	else if (tmp.doublef)
 		tmp.doubleV -= i;
-	/*else if (tmp.stringf)
-		tmp.strV -= to_string(i);*/
+	else if (tmp.stringf)
+	{ }
 
 	return tmp;
 }
@@ -256,38 +258,53 @@ Var Var::operator-(double d)
 		tmp.intV -= d;
 	else if (tmp.doublef)
 		tmp.doubleV -= d;
-	/*else if (tmp.stringf)
-		tmp.strV -= to_string(d);*/
+	else if (tmp.stringf)
+	{ }
 
 	return tmp;
 }
-//Var Var::operator-(string s)
-//{
-//	
-//}
-//Var Var::operator-(const char * s)
-//{
-//	
-//}
+Var Var::operator-(string s)
+{
+	Var tmp(*this);
+	if (tmp.intf)
+		tmp.intV -= atoi(s.c_str());
+	else if (tmp.doublef)
+		tmp.doubleV -= atof(s.c_str());
+	else if (tmp.stringf)
+	{
+	}
+
+	return tmp;
+}
+Var Var::operator-(const char * s)
+{
+	Var tmp(*this);
+	if (tmp.intf)
+		tmp.intV -= atoi(s);
+	else if (tmp.doublef)
+		tmp.doubleV -= atof(s);
+	else if (tmp.stringf)
+	{
+	}
+
+	return tmp;
+}
 Var Var::operator-=(Var obj)
 {
-	if (intf)
-		intV -= obj.intV;
-	else if (doublef)
-		doubleV -= obj.doubleV;
-	/*else if (stringf)
-		strV -= obj.strV;*/
-
+	*this = this->operator-(obj); //!!!!!!!!!! через указатель вызываем другой метод класса this->operator или(*this).operator, но стрелка быстрее
 	return *this;
 }
 Var Var::operator-=(int i)
 {
-	return(*this - i);
+	*this = this->operator-(i);
+	return *this;
 }
 Var Var::operator-=(double d)
 {
-	return(*this - d);
+	*this = this->operator-(d);
+	return *this;
 }
+
 Var Var::operator*(Var obj)
 {
 	Var tmp(*this);
@@ -296,8 +313,22 @@ Var Var::operator*(Var obj)
 	else if (tmp.doublef)
 		tmp.doubleV *= obj.doubleV;
 	else if (tmp.stringf)
-		//tmp.strV.operator*=(obj.strV); //см будет ли вызывать перегружэенный оператор
-
+	{
+		if (obj.intf)
+		{
+			string s = tmp.strV;
+			for (int i = 0; i < obj.intV - 1; i++)
+				tmp.strV += s;
+		}
+		else if (obj.doublef)
+		{
+			string s = tmp.strV;
+			for (int i = 0; i < int(obj.doubleV) - 1; i++)
+				tmp.strV += s;
+		}
+		else
+			tmp.strV = strMult(tmp.strV, obj.strV);
+	}
 	return tmp;
 }
 Var Var::operator*(int i)
@@ -308,8 +339,13 @@ Var Var::operator*(int i)
 		tmp.intV *= i;
 	else if (tmp.doublef)
 		tmp.doubleV *= i;
-	/*else if (tmp.stringf)
-		tmp.strV *= to_string(i);*/
+	else if (tmp.stringf) //сами придумали правило
+	{
+		string s = tmp.strV;
+		
+		for (int j = 0; j < i - 1; j++)
+			tmp.strV += s;
+	}
 
 	return tmp;
 }
@@ -321,54 +357,204 @@ Var Var::operator*(double d)
 		tmp.intV *= d;
 	else if (tmp.doublef)
 		tmp.doubleV *= d;
-	/*else if (tmp.stringf)
-		tmp.strV *= to_string(d);*/
+	else if (tmp.stringf)
+	{
+		string s = tmp.strV;
+		for (int j = 0; j < d - 1; j++)
+			tmp.strV += s;
+	}
 
 	return tmp;
 }
+
 Var Var::operator*(string s)
 {
 	Var tmp(*this);
-	//?
+	if (intf)
+		tmp.intV *= atoi(s.c_str());
+	else if (doublef)
+		tmp.intV *= atof(s.c_str());
+	else if(stringf)
+		tmp.strV = strMult(tmp.strV, s);
 	return tmp;
 }
 Var Var::operator*(const char * s)
 {
 	Var tmp(*this);
-
-	if (tmp.intf)
+	if (intf)
 		tmp.intV *= atoi(s);
+	else if (intf)
+		tmp.intV *= atof(s);
+	else
+		tmp.strV = strMult(tmp.strV, string(s));
+	//if (tmp.intf)
+	//	tmp.intV *= atoi(s);
+	//else if (tmp.doublef)
+	//	tmp.doubleV *= atof(s);
+	//else if (tmp.stringf)
+	//{
+	//	int k = 0;
+	//	for (int i = 0; i < strlen(s); i++)
+	//	{
+	//		for (int j = 0; j < strlen(strV.c_str()); j++)// сначала переведем в чар массив, чтобы определить длину
+	//		{
+	//			if (s[i] == s[j])
+	//			{
+	//				swap(s[j], s[k]);
+	//				k++;
+	//				if (j <= k) k--; //j-1?? and j--
+	//				break;
+	//			}
+	//		}
+	//	}
+	//	for (int i = 0; i < k; i++)
+	//	{
+	//		tmp.strV.c_str[i] = s[i]; //???
+	//	}
+	//}
+	return tmp;
+}
+Var Var::operator/(Var obj)
+{
+	Var tmp(*this);
+	if (tmp.intf)
+	{
+		tmp.doubleV = double(tmp.intV) / obj.intV;
+		tmp.intf = false;
+		tmp.doubleV = true;
+		//tmp.intV /= obj.intV;
+	}
 	else if (tmp.doublef)
-		tmp.doubleV *= atof(s);
+		tmp.doubleV /= obj.doubleV;
 	else if (tmp.stringf)
 	{
-		int k = 0;
-		for (int i = 0; i < strlen(s); i++)
-		{
-			for (int j = 0; j < strlen(*this->s); j++)//?
-			{
-				if (s[i] != s[j])
-				{
-					swap(s[j], s[k]);
-					k++;
-					break;
-				}
-			}
+		if (obj.intf) {
+			tmp.strV = tmp.strV.substr(0, tmp.strV.size() / obj.intV);//???
 		}
-		for (int i = 0; i < k; i++)
-			tmp[i] = s[i];
-
+		tmp.strV = strDiv(tmp.strV, obj.strV);
 	}
 	return tmp;
 }
-//Var Var::operator-=(string s)
-//{
-//	
-//}
-//Var Var::operator-=(const char * s)
-//{
-//	
-//}
+Var Var::operator/(int i)
+{
+	Var tmp(*this);
+
+	if (tmp.intf)
+	{
+		tmp.doubleV = double(tmp.intV) / i;
+		tmp.intf = false;
+		tmp.doubleV = true;
+	}
+	else if (tmp.doublef)
+		tmp.doubleV /= i;
+	else if (tmp.stringf) //сами придумали правило
+	{
+		string s;
+
+		for (int j = 0; j < strlen(strV.c_str()) / i; j++)
+			s +=strV.c_str()[j];
+
+		tmp.strV = s;
+	}
+	return tmp;
+}
+Var Var::operator/(double d)
+{
+	Var tmp(*this);
+
+	if (tmp.intf)
+	{
+		tmp.doubleV = double(tmp.intV) / d;
+		tmp.intf = false;
+		tmp.doubleV = true;
+	}
+	else if (tmp.doublef)
+		tmp.doubleV /= d;
+	else if (tmp.stringf) //сами придумали правило
+	{
+		string s;
+		
+		for (int j = 0; j < int(strlen(strV.c_str()) / d); j++)
+			s += strV.c_str()[j];
+
+		tmp.strV = s;
+	}
+
+	return tmp;
+}
+Var Var::operator/(string s)
+{
+	Var tmp(*this);
+	if (intf)
+		tmp.intV /= atoi(s.c_str());
+	else if (doublef)
+		tmp.intV /= atof(s.c_str());
+	else
+		tmp.strV = strDiv(tmp.strV, s);
+	return tmp;
+}
+Var Var::operator/(const char * s)
+{
+	Var tmp(*this);
+	if (intf)
+		tmp.intV /= atoi(s);
+	else if (doublef)
+		tmp.intV /= atof(s);
+	else
+	tmp.strV = strDiv(tmp.strV, string(s));
+
+	return tmp;
+}
+Var Var::operator*=(Var obj)
+{
+	*this = *this*obj;
+	return *this;
+}
+Var Var::operator*=(int i)
+{
+	*this = *this*(i);
+	return *this;
+}
+Var Var::operator*=(double d)
+{
+	*this = *this*(d);
+	return *this;
+}
+Var Var::operator*=(string s)
+{
+	*this=*this*(s);
+	return *this;
+}
+Var Var::operator*=(const char * s)
+{
+	*this=*this*(s);
+	return *this;
+}
+Var Var::operator/=(Var obj)
+{
+	*this = *this/(obj);
+	return *this;
+}
+Var Var::operator/=(int i)
+{
+	*this = *this/(i);
+	return *this;
+}
+Var Var::operator/=(double d)
+{
+	*this = *this/(d);
+	return *this;
+}
+Var Var::operator/=(string s)
+{
+	*this = *this /(s);
+	return *this;
+}
+Var Var::operator/=(const char * s)
+{
+	*this=*this/(s);
+	return *this;
+}
 bool Var::operator>(Var obj)
 {
 	if (intf)
@@ -386,8 +572,7 @@ bool Var::operator>(Var obj)
 		if (strV > obj.strV)
 			return true;
 	}
-	else
-		return false;
+	return false;
 }
 bool Var::operator>(int i)
 {
@@ -422,8 +607,8 @@ bool Var::operator<(Var obj)
 		if (strV < obj.strV)
 			return true;
 	}
-	else
-		return false;
+	
+	return false;
 }
 bool Var::operator<(int i)
 {
@@ -439,7 +624,79 @@ bool Var::operator<(string s)
 }
 bool Var::operator<(const char * s)
 {
-	return  (strV < s);
+	return  (strV < s);//? string(s);
+}
+bool Var::operator>=(Var obj)
+{
+	if (intf)
+	{
+		if (intV >= obj.intV)
+			return true;
+	}
+	else if (doublef)
+	{
+		if (doubleV >= obj.doubleV)
+			return true;
+	}
+	else if (stringf)
+	{
+		if (strV >= obj.strV)
+			return true;
+	}
+
+	return false;
+}
+bool Var::operator>=(int i)
+{
+	return (intV >= i);
+}
+bool Var::operator>=(double d)
+{
+	return (doubleV >= d);
+}
+bool Var::operator>=(string s)
+{
+	return  (strV >= s);
+}
+bool Var::operator>=(const char * s)
+{
+	return  (strV >= s);
+}
+bool Var::operator<=(Var obj)
+{
+	if (intf)
+	{
+		if (intV <= obj.intV)
+			return true;
+	}
+	else if (doublef)
+	{
+		if (doubleV <= obj.doubleV)
+			return true;
+	}
+	else if (stringf)
+	{
+		if (strV <= obj.strV)
+			return true;
+	}
+
+	return false;
+}
+bool Var::operator<=(int i)
+{
+	return (intV <= i);
+}
+bool Var::operator<=(double d)
+{
+	return (doubleV <= d);
+}
+bool Var::operator<=(string s)
+{
+	return  (strV <= s);
+}
+bool Var::operator<=(const char * s)
+{
+	return  (strV <= s);//? string(s);
 }
 void Var::show()
 {
@@ -449,4 +706,46 @@ void Var::show()
 		cout << doubleV << endl;
 	else if (stringf)
 		cout << strV << endl;
+}
+
+string strMult(string s1, string s2)
+{
+	string s;
+	bool f;
+	for (int i = 0; i < s1.size(); i++)
+	{
+		f = false;
+		for (int j = 0; j < s2.size(); j++)
+		{
+			if (s1[i] == s2[j])
+			{
+				f = true;
+				break;
+			}
+		}
+		if (f == true)
+			s += s1[i];
+	}
+	return s;
+}
+
+string strDiv(string s1, string s2)
+{
+	string s;
+	bool f;
+	for (int i = 0; i < s1.size(); i++)
+	{
+		f = false;
+		for (int j = 0; j < s2.size(); j++)
+		{
+			if (s1[i] == s2[j])
+			{
+				f = true;
+				break;
+			}
+		}
+		if (f == false)
+			s += s1[i];
+	}
+	return s;
 }

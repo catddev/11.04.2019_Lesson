@@ -47,6 +47,8 @@ using namespace std;
 //Аналогично для Строки *= и /=
 //Добавить в класс var преобразования к типам : int, double, char*
 
+string strMult(string s1, string s2);
+string strDiv(string s1, string s2);
 class Var {
 	int intV;
 	double doubleV;
@@ -63,65 +65,88 @@ public:
 	operator double();
 
 	Var operator=(string s);
+
 	Var operator+(Var obj);
 	Var operator+(int i);
 	Var operator+(double d);
 	Var operator+(string s);
 	Var operator+(const char* s);
+
 	Var operator+=(Var obj); //в отличие от просто оператора +, здесь все изменения будут в текущем объекте, будут его изменять
 	Var operator+=(int i);
 	Var operator+=(double d);
 	Var operator+=(string s);
 	Var operator+=(const char* s);
+
 	Var operator-(Var obj);
 	Var operator-(int i);
 	Var operator-(double d);
-	//Var operator-(string s);
-	//Var operator-(const char* s);
+	Var operator-(string s);
+	Var operator-(const char* s);
+
 	Var operator-=(Var obj);
 	Var operator-=(int i);
 	Var operator-=(double d);
-	//Var operator-=(string s);
-	//Var operator-=(const char* s);
+
 	Var operator*(Var obj);
 	Var operator*(int i);
 	Var operator*(double d);
 	Var operator*(string s);
 	Var operator*(const char* s);
-	//Var operator/(Var obj);
-	//Var operator/(int i);
-	//Var operator/(double d);
-	//Var operator/(string s);
-	//Var operator/(const char* s);
-	//Var operator*=(Var obj);
-	//Var operator*=(int i);
-	//Var operator*=(double d);
-	//Var operator*=(string s);
-	//Var operator*=(const char* s);
-	//Var operator/=(Var obj);
-	//Var operator/=(int i);
-	//Var operator/=(double d);
-	//Var operator/=(string s);
-	//Var operator/=(const char* s);
+
+	Var operator/(Var obj);
+	Var operator/(int i);
+	Var operator/(double d);
+	Var operator/(string s);
+	Var operator/(const char* s);
+
+	Var operator*=(Var obj);
+	Var operator*=(int i);
+	Var operator*=(double d);
+	Var operator*=(string s);
+	Var operator*=(const char* s);
+
+	Var operator/=(Var obj);
+	Var operator/=(int i);
+	Var operator/=(double d);
+	Var operator/=(string s);
+	Var operator/=(const char* s);
+
 	bool operator==(Var obj);
 	bool operator==(int i);
 	bool operator==(double d);
 	bool operator==(string s);
 	bool operator==(const char* s);
+
 	bool operator!=(Var obj);
 	bool operator!=(int i);
 	bool operator!=(double d);
 	bool operator!=(string s);
 	bool operator!=(const char* s);
+
 	bool operator>(Var obj);
 	bool operator>(int i);
 	bool operator>(double d);
 	bool operator>(string s);
 	bool operator>(const char* s);
+
 	bool operator<(Var obj);
 	bool operator<(int i);
 	bool operator<(double d);
 	bool operator<(string s);
 	bool operator<(const char* s);
+
+	bool operator>=(Var obj);
+	bool operator>=(int i);
+	bool operator>=(double d);
+	bool operator>=(string s);
+	bool operator>=(const char* s);
+
+	bool operator<=(Var obj);
+	bool operator<=(int i);
+	bool operator<=(double d);
+	bool operator<=(string s);
+	bool operator<=(const char* s);
+
 	void show();
 };

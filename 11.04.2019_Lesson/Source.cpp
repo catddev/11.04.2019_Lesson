@@ -7,6 +7,10 @@ int main() {
 	Var el3 = "15";
 	el3.show();
 
+	char str[20];
+	strcpy_s(str, "MICROSOFT");
+	Var el33(str);//?
+
 	double a = 100 + el;
 	double b = el + el3;
 	Var el4 = 1000;
@@ -29,7 +33,9 @@ int main() {
 	el7+=el2;
 	cout << "+=Var test" << endl;
 	el7.show();
+	cout << "-=Var test" << endl;
 	(el -= el4).show();
+	(el2 -= 1000).show(); //nothing will happen here because flag is stringf
 
 	Var el5(el1);
 	if (el1 == el5) cout << "equal" << endl;
@@ -43,6 +49,35 @@ int main() {
 
 	if (el7 > el1) cout << "el7 is larger" << endl;
 	if (el4 < 2000) cout << "el4 is less" << endl;
+
+	Var el22(el7);
+	if (el7 >= el22) cout << "el7 is larger or equal" << endl;
+	if (el2 >= el1) cout << "el2 is larger or equal" << endl;
+	if (el4 <= 1000) cout << "el4 is less or equal" << endl;
+	if (el4 <= 1500) cout << "el4 is less or equal" << endl;
+
+	cout << "*=Var test" << endl;
+	(el *= 1.5).show();
+	Var el8 = 1000;
+	(el8 *= 3).show();
+	Var el9="Microsoft";
+	Var el44 = "Microsoft";
+	(el44 *= 5).show();
+	string s1 = "Windows";
+	(el9 *=s1).show();
+	Var el88 = 2.5;
+	(el9*=el88).show();
+	cout << "/=Var test" << endl;
+	(el /= 1.57).show();
+	(el /= 4).show();
+	(el8 /= el1).show();
+	string s2 = "Windows";
+	(el9 /2.5).show();
+	Var el10="Microsoft";
+	Var el11="Windows";
+	(el10 /= el11).show();
+	(el10 /= s2).show();
+
 
 	system("pause");
 	return 0;
