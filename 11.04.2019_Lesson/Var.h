@@ -55,14 +55,17 @@ class Var {
 	string strV;
 	bool intf, doublef, stringf; //флажки
 public:
-	Var();
+	Var(); //конструктор по умочанию нужен всегда, чтобы можно было создавать массивы классов
 	//creating different constructors
 	Var(int i);
 	Var(double d);
 	Var(string s);
 	Var(const char*s);
-	//operator int();
-	operator double();
+
+	//чтобы было возможно прямое присваивание значений Var в переменную соответствующего типа
+	operator int()const; //const чтобы когда будет принимать константные значения не ругался на несоответствие типов
+	operator double()const; //
+	operator string()const;
 
 	Var operator=(string s);
 

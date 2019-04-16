@@ -1,10 +1,13 @@
 ﻿#include "Var.h"
 
-Var::Var()
+Var::Var() 
 {
 	intV = 0;
 	doubleV = 0;
 	strV = ""; //пустую строку по умочанию
+	intf = true;
+	doubleV = false;
+	stringf = false;
 }
 
 Var::Var(int i)
@@ -48,14 +51,19 @@ Var::Var(const char * s)
 	this->doubleV = atof(strV.c_str());
 }
 
-//Var::operator int()
-//{
-//	return intV;
-//}
+Var::operator int() const
+{
+	return intV;
+}
 
-Var::operator double()
+Var::operator double() const
 {
 	return doubleV;
+}
+
+Var::operator string() const
+{
+	return strV;
 }
 
 Var Var::operator=(string s)
@@ -205,7 +213,7 @@ bool Var::operator==(const char * s)
 }
 bool Var::operator!=(Var obj)
 {
-	return(!*this==(obj)); //отрицаем оператор==
+	return(!(*this==(obj))); //отрицаем оператор==
 }
 bool Var::operator!=(int i)
 {
@@ -315,13 +323,13 @@ Var Var::operator*(Var obj)
 		if (obj.intf)
 		{
 			string s = tmp.strV;
-			for (int i = 0; i < obj.intV - 1; i++)
+			for (int i = 0; i < obj.intV - 1; i++) //-1 потому что один раз уже скопировали tmp.strV в string, или если string s пустое, то в цикле просто i<obj.intV
 				tmp.strV += s;
 		}
 		else if (obj.doublef)
 		{
 			string s = tmp.strV;
-			for (int i = 0; i < int(obj.doubleV) - 1; i++)
+			for (int i = 0; i < int(obj.doubleV) - 1; i++)// into intf
 				tmp.strV += s;
 		}
 		else
@@ -417,7 +425,7 @@ Var Var::operator/(Var obj)
 	Var tmp(*this);
 	if (tmp.intf)
 	{
-		tmp.doubleV = double(tmp.intV) / obj.intV;
+		tmp.doubleV = double(tmp.intV) / obj.intV;// обязательно сохранять дробную часть, даже при флажке intf, потому переводим в double
 		tmp.intf = false;
 		tmp.doubleV = true;
 		//tmp.intV /= obj.intV;
@@ -427,7 +435,7 @@ Var Var::operator/(Var obj)
 	else if (tmp.stringf)
 	{
 		if (obj.intf) {
-			tmp.strV = tmp.strV.substr(0, tmp.strV.size() / obj.intV);//???
+			tmp.strV = tmp.strV.substr(0, tmp.strV.size() / obj.intV);//substr(pos, n) возвращает подстроку с позиции Pos длиной n символов
 		}
 		tmp.strV = strDiv(tmp.strV, obj.strV);
 	}
@@ -449,8 +457,8 @@ Var Var::operator/(int i)
 	{
 		string s;
 
-		for (int j = 0; j < strlen(strV.c_str()) / i; j++)
-			s +=strV.c_str()[j];
+		for (int j = 0; j < strV.size() / i; j++) //or j < strlen(strV.c_str())/i
+			s +=strV[j];
 
 		tmp.strV = s;
 	}
@@ -472,8 +480,8 @@ Var Var::operator/(double d)
 	{
 		string s;
 		
-		for (int j = 0; j < int(strlen(strV.c_str()) / d); j++)
-			s += strV.c_str()[j];
+		for (int j = 0; j < int(strV.size()/ d); j++)
+			s += strV[j];
 
 		tmp.strV = s;
 	}
@@ -484,7 +492,7 @@ Var Var::operator/(string s)
 {
 	Var tmp(*this);
 	if (intf)
-		tmp.intV /= atoi(s.c_str());
+		tmp.intV /= double(atoi(s.c_str()));
 	else if (doublef)
 		tmp.intV /= atof(s.c_str());
 	else
@@ -495,7 +503,7 @@ Var Var::operator/(const char * s)
 {
 	Var tmp(*this);
 	if (intf)
-		tmp.intV /= atoi(s);
+		tmp.intV /= double(atoi(s));
 	else if (doublef)
 		tmp.intV /= atof(s);
 	else

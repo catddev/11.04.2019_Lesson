@@ -8,7 +8,7 @@ int main() {
 	Var el3 = "15";//const char
 	el3.show();
 
-	double a = 100 + el;
+	double a = el; //только прямое присваивание
 	double b = el + el3;
 	Var el4 = 1000;
 	Var c = el4 + el3;
@@ -75,6 +75,22 @@ int main() {
 	(el10 /= el11).show();
 	(el10 /= s2).show();
 
+	Var vs[10];// можно благодаря конструктору по умолчанию
+
+	Var aa = 10;
+	Var bb = "Hello";
+	Var cc = 7.8;
+
+	//тесты на операторы int, double, string, чтобы было возможно прямое присваивание значений Var в переменную соответствующего типа
+	int x = aa;
+	cout << x << endl;
+	double y = cc;
+	cout << y << endl;
+	string s;
+	s = bb;
+	cout << s << endl;
+	s = aa;
+	cout << s << endl;
 
 	system("pause");
 	return 0;
