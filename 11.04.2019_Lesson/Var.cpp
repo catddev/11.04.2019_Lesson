@@ -576,7 +576,7 @@ bool Var::operator>(const Var& obj) const
 }
 bool Var::operator>(int i) const
 {
-	return (intV > i);
+	return (intV > i);//or compare to doubleV?
 }
 bool Var::operator>(double d) const
 {

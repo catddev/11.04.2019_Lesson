@@ -93,8 +93,10 @@ int main() {
 	cout << s << endl;
 
 	Var dd = 7;
-	if (dd <= cc) cout << "less" << endl;
-
+	if (dd <= cc) cout << "less or equal" << endl;
+	Var nn = "HELLO";
+	Var mm = "hello";
+	if (nn < mm) cout << "first string is less" << endl;
 
 	system("pause");
 	return 0;
