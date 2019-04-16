@@ -88,7 +88,6 @@ Var Var::operator+(Var obj) //чтобы выбирал тип по первом
 
 	return tmp; //возвращаем tmp, чтобы исходный объект не менять!
 }
-
 Var Var::operator+(int i)
 {
 	Var tmp(*this);
@@ -102,7 +101,6 @@ Var Var::operator+(int i)
 
 	return tmp;
 }
-
 Var Var::operator+(double d)
 {
 	Var tmp(*this);
@@ -116,7 +114,6 @@ Var Var::operator+(double d)
 
 	return tmp;
 }
-
 Var Var::operator+(string s)
 {
 	Var tmp(*this);
@@ -143,25 +140,23 @@ Var Var::operator+(const char* s)
 
 	return tmp;
 }
+
 Var Var::operator+=(Var obj)
 {
 	return(*this = *this + (obj));
 }
-
 Var Var::operator+=(int i)
 {
 	*this = *this + (i);
 
 	return *this;
 }
-
 Var Var::operator+=(double d)
 {
 	*this = *this + (d);
 
 	return *this;
 }
-
 Var Var::operator+=(string s)
 {
 	*this = *this + (s);
@@ -175,7 +170,7 @@ Var Var::operator+=(const char* s)
 	return *this;
 }
 
-bool Var::operator==(Var obj)
+bool Var::operator==(const Var& obj) const
 {
 	if (intf)
 	{
@@ -195,42 +190,44 @@ bool Var::operator==(Var obj)
 	else
 		return false;
 }
-bool Var::operator==(int i)
+bool Var::operator==(int i) const
 {
 	return (intV == i);
 }
-bool Var::operator==(double d)
+bool Var::operator==(double d) const
 {
 	return (doubleV == d);
 }
-bool Var::operator==(string s)
+bool Var::operator==(string s) const
 {
 	return  (strV == s);
 }
-bool Var::operator==(const char * s)
+bool Var::operator==(const char * s) const
 {
 	return (strV == string(s));//
 }
-bool Var::operator!=(Var obj)
+
+bool Var::operator!=(const Var& obj) const
 {
 	return(!(*this==(obj))); //отрицаем оператор==
 }
-bool Var::operator!=(int i)
+bool Var::operator!=(int i) const
 {
 	return (intV != i);
 }
-bool Var::operator!=(double d)
+bool Var::operator!=(double d) const
 {
 	return (doubleV != d);
 }
-bool Var::operator!=(string s)
+bool Var::operator!=(string s) const
 {
 	return (strV != s);
 }
-bool Var::operator!=(const char * s)
+bool Var::operator!=(const char * s) const
 {
 	return (strV != string(s));
 }
+
 Var Var::operator-(Var obj)
 {
 	Var tmp(*this);
@@ -295,6 +292,7 @@ Var Var::operator-(const char * s)
 
 	return tmp;
 }
+
 Var Var::operator-=(Var obj)
 {
 	*this = this->operator-(obj); //!!!!!!!!!! через указатель вызываем другой метод класса this->operator или(*this).operator, но стрелка быстрее
@@ -372,7 +370,6 @@ Var Var::operator*(double d)
 
 	return tmp;
 }
-
 Var Var::operator*(string s)
 {
 	Var tmp(*this);
@@ -420,6 +417,7 @@ Var Var::operator*(const char * s)
 	//}
 	return tmp;
 }
+
 Var Var::operator/(Var obj)
 {
 	Var tmp(*this);
@@ -511,6 +509,7 @@ Var Var::operator/(const char * s)
 
 	return tmp;
 }
+
 Var Var::operator*=(Var obj)
 {
 	*this = *this*obj;
@@ -536,6 +535,7 @@ Var Var::operator*=(const char * s)
 	*this=*this*(s);
 	return *this;
 }
+
 Var Var::operator/=(Var obj)
 {
 	*this = *this/(obj);
@@ -561,149 +561,107 @@ Var Var::operator/=(const char * s)
 	*this=*this/(s);
 	return *this;
 }
-bool Var::operator>(Var obj)
+
+bool Var::operator>(const Var& obj) const
 {
-	if (intf)
+	if (intf || doublef)
 	{
-		if (intV > obj.intV)
-			return true;
-	}
-	else if (doublef)
-	{
-		if (doubleV > obj.doubleV)
-			return true;
+		return(doubleV > obj.doubleV);//obj.doubleV чтобы не терялась дробная часть, если сравнивают целое либо дробное первого Var всегда именно c дробным значения obj.Var
 	}
 	else if (stringf)
 	{
-		if (strV > obj.strV)
-			return true;
+		return(strV > obj.strV);
 	}
 	return false;
 }
-bool Var::operator>(int i)
+bool Var::operator>(int i) const
 {
 	return (intV > i);
 }
-bool Var::operator>(double d)
+bool Var::operator>(double d) const
 {
 	return (doubleV > d);
 }
-bool Var::operator>(string s)
+bool Var::operator>(string s) const
 {
 	return  (strV > s);
 }
-bool Var::operator>(const char * s)
+bool Var::operator>(const char * s) const
 {
 	return  (strV > string(s));
 }
-bool Var::operator<(Var obj)
+
+bool Var::operator<(const Var& obj) const
 {
-	if (intf)
-	{
-		if (intV < obj.intV)
-			return true;
-	}
-	else if (doublef)
-	{
-		if (doubleV < obj.doubleV)
-			return true;
-	}
-	else if (stringf)
-	{
-		if (strV < obj.strV)
-			return true;
-	}
-	
-	return false;
+	return(!(*this > obj));
 }
-bool Var::operator<(int i)
+bool Var::operator<(int i) const
 {
 	return (intV < i);
 }
-bool Var::operator<(double d)
+bool Var::operator<(double d) const
 {
 	return (doubleV < d);
 }
-bool Var::operator<(string s)
+bool Var::operator<(string s) const
 {
 	return  (strV < s);
 }
-bool Var::operator<(const char * s)
+bool Var::operator<(const char * s) const
 {
 	return  (strV < string(s));
 }
-bool Var::operator>=(Var obj)
+
+bool Var::operator>=(const Var& obj) const
 {
-	if (intf)
+	if (intf || doublef)
 	{
-		if (intV >= obj.intV)
-			return true;
-	}
-	else if (doublef)
-	{
-		if (doubleV >= obj.doubleV)
-			return true;
+		return(doubleV >= obj.doubleV);
 	}
 	else if (stringf)
 	{
-		if (strV >= obj.strV)
-			return true;
+		return(strV >= obj.strV);
 	}
-
 	return false;
 }
-bool Var::operator>=(int i)
+bool Var::operator>=(int i) const
 {
 	return (intV >= i);
 }
-bool Var::operator>=(double d)
+bool Var::operator>=(double d) const
 {
 	return (doubleV >= d);
 }
-bool Var::operator>=(string s)
+bool Var::operator>=(string s) const
 {
 	return  (strV >= s);
 }
-bool Var::operator>=(const char * s)
+bool Var::operator>=(const char * s) const
 {
 	return  (strV >= string(s));
 }
-bool Var::operator<=(Var obj)
-{
-	if (intf)
-	{
-		if (intV <= obj.intV)
-			return true;
-	}
-	else if (doublef)
-	{
-		if (doubleV <= obj.doubleV)
-			return true;
-	}
-	else if (stringf)
-	{
-		if (strV <= obj.strV)
-			return true;
-	}
 
-	return false;
+bool Var::operator<=(const Var& obj) const
+{
+	return(!(*this >= obj));
 }
-bool Var::operator<=(int i)
+bool Var::operator<=(int i) const
 {
 	return (intV <= i);
 }
-bool Var::operator<=(double d)
+bool Var::operator<=(double d) const
 {
 	return (doubleV <= d);
 }
-bool Var::operator<=(string s)
+bool Var::operator<=(string s) const
 {
 	return  (strV <= s);
 }
-bool Var::operator<=(const char * s)
+bool Var::operator<=(const char * s) const
 {
 	return  (strV <= string(s));
 }
+
 void Var::show()
 {
 	if (intf)

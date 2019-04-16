@@ -115,41 +115,42 @@ public:
 	Var operator/=(string s);
 	Var operator/=(const char* s);
 
-	bool operator==(Var obj);
-	bool operator==(int i);
-	bool operator==(double d);
-	bool operator==(string s);
-	bool operator==(const char* s);
+	bool operator==(const Var& obj) const; //чтобы значение передаваемое нельзя было менять, так корректнее просто при функциях типа bool
+	//const который в конце нужен для того, чтобы в дальнейшем работать с объектами Var, которые захотим использовать как константы
+	bool operator==(int i) const;
+	bool operator==(double d) const;
+	bool operator==(string s) const;
+	bool operator==(const char* s) const;
 
-	bool operator!=(Var obj);
-	bool operator!=(int i);
-	bool operator!=(double d);
-	bool operator!=(string s);
-	bool operator!=(const char* s);
+	bool operator!=(const Var& obj) const;
+	bool operator!=(int i) const;
+	bool operator!=(double d) const;
+	bool operator!=(string s) const;
+	bool operator!=(const char* s) const;
 
-	bool operator>(Var obj);
-	bool operator>(int i);
-	bool operator>(double d);
-	bool operator>(string s);
-	bool operator>(const char* s);
+	bool operator>(const Var& obj) const;
+	bool operator>(int i) const;
+	bool operator>(double d) const;
+	bool operator>(string s) const;
+	bool operator>(const char* s) const;
 
-	bool operator<(Var obj);
-	bool operator<(int i);
-	bool operator<(double d);
-	bool operator<(string s);
-	bool operator<(const char* s);
+	bool operator<(const Var& obj) const;
+	bool operator<(int i) const;
+	bool operator<(double d) const;
+	bool operator<(string s) const;
+	bool operator<(const char* s) const;
 
-	bool operator>=(Var obj);
-	bool operator>=(int i);
-	bool operator>=(double d);
-	bool operator>=(string s);
-	bool operator>=(const char* s);
+	bool operator>=(const Var& obj) const;
+	bool operator>=(int i) const;
+	bool operator>=(double d) const;
+	bool operator>=(string s) const;
+	bool operator>=(const char* s) const;
 
-	bool operator<=(Var obj);
-	bool operator<=(int i);
-	bool operator<=(double d);
-	bool operator<=(string s);
-	bool operator<=(const char* s);
+	bool operator<=(const Var& obj) const;
+	bool operator<=(int i) const;
+	bool operator<=(double d) const;
+	bool operator<=(string s) const;
+	bool operator<=(const char* s) const;
 
 	void show();
 };

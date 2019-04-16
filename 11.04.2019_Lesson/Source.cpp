@@ -92,6 +92,10 @@ int main() {
 	s = aa;
 	cout << s << endl;
 
+	Var dd = 7;
+	if (dd <= cc) cout << "less" << endl;
+
+
 	system("pause");
 	return 0;
 }
